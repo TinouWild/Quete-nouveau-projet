@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Index</h1>
+
+    <div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h2>Index des Articles</h2>
+        {%  for list in listes %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title font-weight-bold">
+                        {{ list.title }}
+                    </div>
+                    <p class="card-text font-italic">{{ list.content }}</p>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <div class="col-6">
+            <h2>Index des Catégories</h2>
+        <ul style="list-style-type:circle">
+        {%  for category in categories %}
+            <li>{{ category.name }}</li>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}
