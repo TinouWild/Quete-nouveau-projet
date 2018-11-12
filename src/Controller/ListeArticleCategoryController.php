@@ -27,7 +27,7 @@ class ListeArticleCategoryController extends AbstractController
     }
 
     /**
-     * @Route("/liste", name="liste_article_category")
+     * @Route("/liste/index", name="liste_article_category")
      */
     public function index()
     {
