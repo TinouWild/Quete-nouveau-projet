@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Category;
 use App\Form\ArticleSearchType;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,13 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends AbstractController
 {
+
     /**
      * Show all row from article's entity
      *
      * @Route("/", name="blog_index")
      * @return Response A response instance
      */
-    public function index(Request $request) : Response
+    public function index(Request $request, ObjectManager $manager) : Response
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
@@ -47,10 +50,24 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('article_show', ['title' => $data['searchField']]);
                 }
 
+        $articleNew = new Article();
+        $formAdd = $this->createForm(ArticleType::class, $articleNew);
+        $formAdd->handleRequest($request);
+
+        if ($formAdd->isSubmitted()) {
+
+            $manager->persist($articleNew);
+            $manager->flush();
+
+            return $this->redirectToRoute('blog_index');
+        }
+
+
         return $this->render(
             'blog/index.html.twig', [
                 'articles' => $articles,
                 'form' => $form->createView(),
+                'formAdd' => $formAdd->createView()
             ]
         );
     }
