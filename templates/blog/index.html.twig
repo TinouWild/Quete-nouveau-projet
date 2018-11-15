@@ -5,6 +5,15 @@
 {% block stylesheets %}{% endblock %}
 
 {% block body %}
+
+    <div class="container">
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button type="submit" class="btn btn-success" name="btnSearch">Rechercher</button>
+    {{ form_end(form) }}
+    </div>
+
+    <div class="container mt-4">
     <h1>All articles from article s table : </h1>
     {% for article in articles %}
         <div>
@@ -12,4 +21,5 @@
             <p>{{ article.content }}</p>
         </div>
     {% endfor %}
+    </div>
 {% endblock %}

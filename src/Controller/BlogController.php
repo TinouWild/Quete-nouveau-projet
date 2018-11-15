@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Form\ArticleSearchType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,10 +17,10 @@ class BlogController extends AbstractController
     /**
      * Show all row from article's entity
      *
-     * @Route("/blog_index", name="blog_index")
+     * @Route("/", name="blog_index")
      * @return Response A response instance
      */
-    public function index() : Response
+    public function index(Request $request) : Response
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
@@ -30,10 +32,27 @@ class BlogController extends AbstractController
             );
         }
 
+        $form = $this->createForm(ArticleSearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $data = $form->getData();
+
+            $article = $this->getDoctrine()
+                ->getRepository(Article::class)
+                ->findBy(
+                    array('title' => $data['searchField'])
+                );
+
+            return $this->redirectToRoute('article_show', ['title' => $data['searchField']]);
+                }
+
         return $this->render(
-        'blog/index.html.twig',
-        ['articles' => $articles]
-    );
+            'blog/index.html.twig', [
+                'articles' => $articles,
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -50,7 +69,7 @@ class BlogController extends AbstractController
      *
      * @param string $slug The slugger
      *
-     * @Route("/{slug<^[a-z0-9-]+$>}",
+     * @Route("/index/{slug<^[a-z0-9-]+$>}",
      *     defaults={"slug" = null},
      *     name="blog_show")
      *  @return Response A response instance
