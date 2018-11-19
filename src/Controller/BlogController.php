@@ -77,7 +77,7 @@ class BlogController extends AbstractController
      */
     public function showOne(Article $article) :Response
     {
-        return $this->render('blog/article.html.twig', ['article'=>$article]);
+        return $this->render('blog/article.html.twig', ['articles' => $article]);
     }
 
 
