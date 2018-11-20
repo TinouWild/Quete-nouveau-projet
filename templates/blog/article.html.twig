@@ -4,14 +4,14 @@
 
 {% block body %}
     <div class="col-6">
-        <h2>Voici l'article : {{ article.title }} </h2>
-            <p>{{ article.content }}</p>
-        <p>Cet article appartient à la catégorie : <strong>{{ article.category.name }}</strong></p>
+        <h2>Voici l'article : {{ articles.title }} </h2>
+            <p>{{ articles.content }}</p>
+        <p>Cet article appartient à la catégorie : <strong>{{ articles.category.name }}</strong></p>
     </div>
 
     <strong>Tags :</strong>
     <ul>
-        {% for tag in article.tags %}
+        {% for tag in articles.tags %}
             <li>{{ tag.name }} </li>
         {% else %}
             <li>No tags for this article</li>

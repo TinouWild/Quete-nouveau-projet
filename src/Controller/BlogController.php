@@ -8,6 +8,7 @@ use App\Form\ArticleSearchType;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use App\Repository\CategoryRepository;
+use App\Service\Slugify;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class BlogController extends AbstractController
      * @Route("/", name="blog_index")
      * @return Response A response instance
      */
-    public function index(Request $request, ObjectManager $manager) : Response
+    public function index(Request $request, ObjectManager $manager, Slugify $slugify) : Response
     {
         $articles = $this->getDoctrine()
             ->getRepository(Article::class)
@@ -51,6 +52,8 @@ class BlogController extends AbstractController
                 }
 
         $articleNew = new Article();
+//        $slug = $slugify->generate($articleNew->getTitle());
+//        $articleNew->setSlug($slug);
         $formAdd = $this->createForm(ArticleType::class, $articleNew);
         $formAdd->handleRequest($request);
 
