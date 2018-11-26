@@ -18,7 +18,7 @@ class Article1Type extends AbstractType
             ->add('title')
             ->add('content')
             ->add('category', EntityType::class, ['class' => Category::class, 'choice_label' => 'name'])
-            ->add('tags', EntityType::class, ['class' => Tag::class, 'choice_label' => 'name'])
+            ->add('tags', EntityType::class, ['class' => Tag::class, 'choice_label' => 'name', 'multiple' => true, 'expanded' => true])
         ;
     }
 
