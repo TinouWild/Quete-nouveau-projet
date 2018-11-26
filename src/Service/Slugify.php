@@ -14,7 +14,8 @@ class Slugify
 
     public function generate(string $input) : string
     {
-        $unwantedChars = array(',', '!', '?'); // create array with unwanted chars
+        $input = iconv('UTF-8', 'US-ASCII//TRANSLIT', $input);
+        $unwantedChars = array(',', '!', '?', '\''); // create array with unwanted chars
         $input = str_replace($unwantedChars, '', $input); // remove them
         $input = strtolower($input);
         $input = trim($input);
